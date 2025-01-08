@@ -202,4 +202,4 @@ custom_html_code = """
 """
 
 # Embed the custom HTML in Streamlit
-components.html(custom_html_code, height=700, scrolling=True)
+components.html(custom_html_code, scrolling=True)
