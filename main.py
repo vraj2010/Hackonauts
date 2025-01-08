@@ -29,9 +29,9 @@ def run_flow(message: str) -> dict:
 
 
 # Streamlit Interface
-st.set_page_config(page_title="Hackonauts Chatbot", page_icon="🧑🏻‍💻", layout="centered")
+st.set_page_config(page_title="Hackonauts Chatbot", layout="centered")
 
-st.title("💬 Chat with Hackonauts")
+st.title("Chat with Hackonauts")
 st.markdown("Get instant responses from LangFlow's AI engine.")
 
 # Input container
