@@ -8,7 +8,7 @@ LANGFLOW_ID = "badb4656-66c0-45f4-b943-79abcbb3ec30"
 APPLICATION_TOKEN = "AstraCS:saguMlpoQItPIzsXrFGOocRZ:fa56792c4868e61e6aca0341cfe84d0b3879fc21441620e5842ef793a1d6b5a9"
 ENDPOINT = "8d3ea9fa-4330-4540-a09a-727bed8b447a?stream=false"
 
-
+# Function to call API
 def run_flow(message: str) -> dict:
     """
     Call the LangFlow API to process the message.
@@ -27,111 +27,96 @@ def run_flow(message: str) -> dict:
     response = requests.post(api_url, json=payload, headers=headers)
     return response.json()
 
-
-# Load the custom UI
+# Full-Width Webpage Code
 custom_html_code = """
 <!DOCTYPE html>
-<html lang="en" xmlns:font-size="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hackonauts Chatbot</title>
-    <link rel="icon" href="https://www.findcoder.io/favicon-32x32.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
     <style>
         body {
-            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
+            font-family: 'Poppins', sans-serif;
             background-color: #030027;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            color: white;
         }
         .container {
-            width: 100%;
-            max-width: 700px;
-            max-height: 90vh;
-            background: #151E3F;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            padding: 0 10%;
+            box-sizing: border-box;
         }
         .header {
-            background: #151E3F;
-            color: yellow;
-            padding: 15px;
             text-align: center;
-            font-size: 25px;
-            font-weight: 500;
+            font-size: 2.5em;
+            color: yellow;
+            margin-bottom: 20px;
         }
         .chat-window {
-            flex-grow: 1;
-            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            height: 70%;
             overflow-y: auto;
-            background-color: #f9f9f9;
+            background: #151E3F;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
         .chat-bubble {
-            padding: 15px;
             margin: 10px 0;
-            border-radius: 20px;
-            font-size: 16px;
-            line-height: 1.5;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2em;
         }
         .user-bubble {
-            background-color: #151E3F;
+            background-color: #4caf50;
             color: white;
             align-self: flex-end;
             text-align: right;
         }
         .ai-bubble {
-            background-color: #e5e5ea;
+            background-color: #f4f4f4;
             color: black;
             align-self: flex-start;
+            text-align: left;
         }
         .input-area {
-            padding: 15px;
-            background-color: #f4f4f9;
-            border-top: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        textarea {
-            flex-grow: 1;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 16px;
-            resize: none;
-            font-family: 'Poppins', Arial, sans-serif;
-        }
-        button {
-            padding: 10px;
-            margin: 5px 0 0 5px;
-            background-color: yellow;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.5s ease;
+        }
+        textarea {
+            width: 85%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1em;
+            resize: none;
+            font-family: 'Poppins', sans-serif;
+        }
+        button {
+            width: 10%;
+            margin-left: 10px;
+            background-color: yellow;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
         }
         button:hover {
-            border: 2px solid#151E3F;
-        }
-        .icon {
-            font-size: 24px;
-        }
-        .icon-large {
-            font-size: 48px;
+            background-color: #e0c200;
         }
     </style>
 </head>
@@ -141,13 +126,12 @@ custom_html_code = """
         <div id="chatWindow" class="chat-window"></div>
         <div class="input-area">
             <form id="chatForm" style="width: 100%; display: flex;">
-                <textarea id="message" placeholder="Type your message..."></textarea>
-                <button type="submit">
-                    <i class="ph-bold ph-paper-plane-tilt icon icon-medium"></i>
-                </button>
+                <textarea id="message" rows="1" placeholder="Type your message here..."></textarea>
+                <button type="submit">Send</button>
             </form>
         </div>
     </div>
+
     <script>
         const chatWindow = document.getElementById('chatWindow');
         const form = document.getElementById('chatForm');
@@ -167,6 +151,7 @@ custom_html_code = """
             // Show loading message for AI
             addMessage('Loading...', 'ai');
 
+            // Fetch response from the server
             const response = await fetch('/chat', {
                 method: 'POST',
                 headers: {
@@ -202,5 +187,5 @@ custom_html_code = """
 </html>
 """
 
-# Embed the custom HTML in Streamlit
-components.html(custom_html_code, height=700, scrolling=True)
+# Embed HTML in Streamlit
+components.html(custom_html_code, height=800, scrolling=True)
