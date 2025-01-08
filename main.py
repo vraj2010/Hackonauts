@@ -48,7 +48,7 @@ custom_html_code = """
             font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #030027;
+            background-color: #0e1117;
             display: flex;
             justify-content: center;
             align-items: center;
