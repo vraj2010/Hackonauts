@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import streamlit.components.v1 as components
 
 # Constants
 BASE_API_URL = "https://api.langflow.astra.datastax.com"
@@ -27,56 +28,69 @@ def run_flow(message: str) -> dict:
     return response.json()
 
 
-# Streamlit Styling
-st.markdown(
-    """
+# Streamlit Interface
+st.title("Hackonauts Chatbot")
+st.write("Powered by Streamlit")
+
+# Load the custom UI
+custom_html_code = """
+<!DOCTYPE html>
+<html lang="en" xmlns:font-size="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackonauts Chatbot</title>
+    <link rel="icon" href="https://www.findcoder.io/favicon-32x32.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
     <style>
         body {
             font-family: 'Poppins', Arial, sans-serif;
-            background-color: #030027;
             margin: 0;
             padding: 0;
+            background-color: #030027;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
             width: 100%;
             max-width: 700px;
             max-height: 90vh;
-            margin: auto;
-            margin-top: 5%;
             background: #151E3F;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            padding: 15px;
-        }
-        .header {
-            color: yellow;
-            text-align: center;
-            font-size: 25px;
-            font-weight: 500;
-            margin-bottom: 15px;
-        }
-        .chat-window {
-            height: 400px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 15px;
-            overflow-y: auto;
             display: flex;
             flex-direction: column;
         }
+        .header {
+            background: #151E3F;
+            color: yellow;
+            padding: 15px;
+            text-align: center;
+            font-size: 25px;
+            font-weight: 500;
+        }
+        .chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
         .chat-bubble {
+            padding: 15px;
             margin: 10px 0;
-            padding: 10px 15px;
             border-radius: 20px;
             font-size: 16px;
             line-height: 1.5;
-            max-width: 80%;
         }
         .user-bubble {
             background-color: #151E3F;
             color: white;
             align-self: flex-end;
+            text-align: right;
         }
         .ai-bubble {
             background-color: #e5e5ea;
@@ -84,8 +98,11 @@ st.markdown(
             align-self: flex-start;
         }
         .input-area {
-            margin-top: 15px;
+            padding: 15px;
+            background-color: #f4f4f9;
+            border-top: 1px solid #ddd;
             display: flex;
+            align-items: center;
             gap: 15px;
         }
         textarea {
@@ -99,55 +116,95 @@ st.markdown(
         }
         button {
             padding: 10px;
+            margin: 5px 0 0 5px;
             background-color: yellow;
             border: none;
-            border-radius: 50%;
             width: 50px;
             height: 50px;
+            border-radius: 50%;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.5s ease;
+        }
+        button:hover {
+            border: 2px solid#151E3F;
+        }
+        .icon {
+            font-size: 24px;
+        }
+        .icon-large {
+            font-size: 48px;
         }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+</head>
+<body>
+    <div class="container">
+        <div class="header">Hackonauts Chatbot</div>
+        <div id="chatWindow" class="chat-window"></div>
+        <div class="input-area">
+            <form id="chatForm" style="width: 100%; display: flex;">
+                <textarea id="message" placeholder="Type your message..."></textarea>
+                <button type="submit">
+                    <i class="ph-bold ph-paper-plane-tilt icon icon-medium"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const chatWindow = document.getElementById('chatWindow');
+        const form = document.getElementById('chatForm');
+        const textarea = document.getElementById('message');
 
-# Container
-st.markdown('<div class="container">', unsafe_allow_html=True)
-st.markdown('<div class="header">Hackonauts Chatbot</div>', unsafe_allow_html=True)
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const userMessage = textarea.value.trim();
+            if (!userMessage) return;
 
-# Chat Window
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
+            // Add user's message to chat window
+            addMessage(userMessage, 'user');
 
-chat_window = st.empty()
+            // Clear the input area
+            textarea.value = '';
 
-# Display messages
-with chat_window.container():
-    for message in st.session_state["messages"]:
-        if message["type"] == "user":
-            st.markdown(f'<div class="chat-bubble user-bubble">{message["content"]}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown(f'<div class="chat-bubble ai-bubble">{message["content"]}</div>', unsafe_allow_html=True)
+            // Show loading message for AI
+            addMessage('Loading...', 'ai');
 
-# Input Area
-st.markdown('<div class="input-area">', unsafe_allow_html=True)
-user_message = st.text_area("Type your message...", key="message", label_visibility="collapsed")
-if st.button("Send", use_container_width=False):
-    if user_message.strip():
-        st.session_state["messages"].append({"type": "user", "content": user_message})
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `message=${encodeURIComponent(userMessage)}`,
+            });
 
-        # Call API
-        try:
-            response = run_flow(user_message)
-            ai_message = response.get("outputs", [{}])[0].get("outputs", [{}])[0].get("results", {}).get(
-                "message", {}).get("text", "No response.")
-        except Exception as e:
-            ai_message = f"An error occurred: {e}"
+            const data = await response.json();
+            const aiMessage = data.response || `Error: ${data.error}`;
 
-        st.session_state["messages"].append({"type": "ai", "content": ai_message})
-        st.experimental_rerun()
-    else:
-        st.error("Please enter a valid message.")
-st.markdown('</div>', unsafe_allow_html=True)
+            // Remove loading message and add AI response
+            removeLastMessage();
+            addMessage(aiMessage, 'ai');
+        });
 
-st.markdown('</div>', unsafe_allow_html=True)
+        function addMessage(text, type) {
+            const messageBubble = document.createElement('div');
+            messageBubble.className = `chat-bubble ${type === 'user' ? 'user-bubble' : 'ai-bubble'}`;
+            messageBubble.textContent = text;
+            chatWindow.appendChild(messageBubble);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        function removeLastMessage() {
+            const bubbles = chatWindow.getElementsByClassName('chat-bubble');
+            if (bubbles.length > 0) {
+                bubbles[bubbles.length - 1].remove();
+            }
+        }
+    </script>
+</body>
+</html>
+"""
+
+# Embed the custom HTML in Streamlit
+components.html(custom_html_code, height=700, scrolling=True)
