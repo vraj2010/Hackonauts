@@ -24,25 +24,41 @@ def run_flow(message: str) -> dict:
     }
 
     response = requests.post(api_url, json=payload, headers=headers)
+    response.raise_for_status()
     return response.json()
 
 
 # Streamlit Interface
-st.title("Chat with LangFlow")
+st.set_page_config(page_title="LangFlow Chat", page_icon="💬", layout="centered")
 
-# Input message from the user
-user_message = st.text_input("Enter your message:")
+st.title("💬 Chat with LangFlow")
+st.markdown("Get instant responses from LangFlow's AI engine.")
 
+# Input container
+with st.container():
+    st.write("### Enter your message:")
+    user_message = st.text_input("", placeholder="Type your message here...")
+
+# Button and response container
 if st.button("Send"):
     if not user_message.strip():
-        st.error("Please enter a valid message.")
+        st.error("⚠️ Please enter a valid message.")
     else:
-        try:
-            response = run_flow(user_message)
-            # Extract the result
-            result = response.get("outputs", [{}])[0].get("outputs", [{}])[0].get("results", {}).get("message", {}).get(
-                "text", "No response.")
-            st.success("Response:")
-            st.write(result)
-        except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
+        with st.spinner("Waiting for response..."):
+            try:
+                response = run_flow(user_message)
+                # Extract the result
+                result = response.get("outputs", [{}])[0].get("outputs", [{}])[0].get(
+                    "results", {}).get("message", {}).get("text", "No response.")
+                
+                # Response container
+                st.success("Response Received:")
+                st.markdown(f"""
+                    <div style="background-color:#f9f9f9; padding:10px; border-radius:5px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                        <p style="color:#333; font-size:16px; font-family:Arial, sans-serif;">{result}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+            except requests.exceptions.RequestException as e:
+                st.error(f"⚠️ An error occurred: {e}")
+            except Exception as e:
+                st.error(f"⚠️ Unexpected error: {e}")
