@@ -28,10 +28,6 @@ def run_flow(message: str) -> dict:
     return response.json()
 
 
-# Streamlit Interface
-st.title("Hackonauts Chatbot")
-st.write("Powered by Streamlit")
-
 # Load the custom UI
 custom_html_code = """
 <!DOCTYPE html>
