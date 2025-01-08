@@ -1,3 +1,2 @@
 flask
 streamlit
-streamlit.components.v1
