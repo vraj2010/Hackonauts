@@ -45,4 +45,4 @@ if st.button("Send"):
             st.success("Response:")
             st.write(result)
         except Exception as e:
-            st.error(f"An error occurred: {str(e)}"
+            st.error(f"An error occurred: {str(e)}")
