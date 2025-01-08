@@ -1,8 +1,5 @@
-from flask import Flask, request, jsonify, render_template
+import streamlit as st
 import requests
-
-# Flask App
-app = Flask(__name__)
 
 # Constants
 BASE_API_URL = "https://api.langflow.astra.datastax.com"
@@ -12,6 +9,9 @@ ENDPOINT = "8d3ea9fa-4330-4540-a09a-727bed8b447a?stream=false"
 
 
 def run_flow(message: str) -> dict:
+    """
+    Call the LangFlow API to process the message.
+    """
     api_url = f"{BASE_API_URL}/lf/{LANGFLOW_ID}/api/v1/run/{ENDPOINT}"
     payload = {
         "input_value": message,
@@ -27,26 +27,22 @@ def run_flow(message: str) -> dict:
     return response.json()
 
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Streamlit Interface
+st.title("Chat with LangFlow")
 
+# Input message from the user
+user_message = st.text_input("Enter your message:")
 
-@app.route('/chat', methods=['POST'])
-def chat():
-    user_message = request.form.get('message', '').strip()
-    if not user_message:
-        return jsonify({"error": "Please enter a valid message."})
-
-    try:
-        response = run_flow(user_message)
-        # Extract the result
-        result = response.get("outputs", [{}])[0].get("outputs", [{}])[0].get("results", {}).get("message", {}).get(
-            "text", "No response.")
-        return jsonify({"response": result})
-    except Exception as e:
-        return jsonify({"error": f"An error occurred: {str(e)}"})
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if st.button("Send"):
+    if not user_message.strip():
+        st.error("Please enter a valid message.")
+    else:
+        try:
+            response = run_flow(user_message)
+            # Extract the result
+            result = response.get("outputs", [{}])[0].get("outputs", [{}])[0].get("results", {}).get("message", {}).get(
+                "text", "No response.")
+            st.success("Response:")
+            st.write(result)
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
