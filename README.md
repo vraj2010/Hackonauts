@@ -51,7 +51,7 @@ The project uses a pre-fed dataset, formatted to include fields such as:
 ## 🖥️ Screenshots
 
 ### Dashboard Overview
-![Dashboard Screenshot](https://via.placeholder.com/600x400) <!-- Replace with actual screenshot -->
+![Dashboard Screenshot](Langflow Setup.jpg)
 
 ### Sentiment Analysis
 ![Sentiment Analysis Screenshot](https://via.placeholder.com/600x400) <!-- Replace with actual screenshot -->
