@@ -48,6 +48,20 @@ The project uses a pre-fed dataset, formatted to include fields such as:
 
 ---
 
+## 🖥 Screenshots
+
+### Langflow Setup
+![Langflow Setup](https://github.com/vraj2010/Hackonauts/blob/main/templates/Langflow%20Setup.jpg)
+
+### DataStax Astra Setup
+![DataStax Astra Setup](https://github.com/vraj2010/Hackonauts/blob/main/templates/Datastax%20Setup.jpg)
+
+### ChatBot Interface
+![ChatBot Interface](https://github.com/vraj2010/Hackonauts/blob/main/templates/Chatbot%20Interface.jpg)
+
+---
+
+
 ## 📜 Installation and Setup
 
 1. **Clone the repository**  
