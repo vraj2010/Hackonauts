@@ -50,17 +50,14 @@ The project uses a pre-fed dataset, formatted to include fields such as:
 
 ## 🖥️ Screenshots
 
-### Dashboard Overview
-![Dashboard Screenshot](Langflow Setup.jpg)
+### Langflow Setup
+![Langflow Setup](https://github.com/vraj2010/Hackonauts/blob/main/Langflow%20Setup.jpg)
 
-### Sentiment Analysis
-![Sentiment Analysis Screenshot](https://via.placeholder.com/600x400) <!-- Replace with actual screenshot -->
-
-### Trending Topics
-![Trending Topics Screenshot](https://via.placeholder.com/600x400) <!-- Replace with actual screenshot -->
+### DataStax Astra Setup
+![DataStax Astra Setup](https://github.com/vraj2010/Hackonauts/blob/main/Datastax%20Setup.jpg)
 
 ### ChatBot Interface
-![ChatBot Screenshot](https://via.placeholder.com/600x400) <!-- Replace with actual screenshot -->
+![ChatBot Interface](https://github.com/vraj2010/Hackonauts/blob/main/Chatbot%20Interface.jpg)
 
 ---
 
