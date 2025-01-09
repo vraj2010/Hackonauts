@@ -32,7 +32,7 @@ def run_flow(message: str) -> dict:
 st.set_page_config(page_title="Hackonauts Chatbot", layout="centered")
 
 st.title("Chat with Hackonauts")
-st.markdown("Get instant responses from LangFlow's AI engine.")
+st.markdown("Data-Driven Social Insights with Langflow and DataStax Astra DB.")
 
 # Input container
 with st.container():
