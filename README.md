@@ -9,6 +9,14 @@ Access the live project at:
 
 ---
 
+## 👥 Team Members
+Vraj Patel: [vraj2010](https://github.com/vraj2010)
+Dhwani Vyas: [dhwani1608](https://github.com/dhwani1608)
+Prince Thakarar: [princethakarar](https://github.com/princethakarar)
+Niva Amrutia: [NivaA121](https://github.com/NivaA121)
+
+---
+
 ## 📖 Features
 
 - **Data Analysis:** Perform in-depth analysis on pre-fed social media data.
