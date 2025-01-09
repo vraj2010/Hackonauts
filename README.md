@@ -1,6 +1,6 @@
 # Social Media Analysis
 
-A comprehensive project designed to analyze social media data using **Langflow** and **Python APIs**, built on a pre-fed dataset. This project also includes a **ChatBot** powered by **DataStax Astra** and **OpenAI API Key**, enabling user-friendly conversational interactions.
+**Hackonauts** is a comprehensive social media analysis project built using **Langflow** and **Python APIs**, leveraging a pre-fed dataset. It includes features like sentiment analysis, trend identification, and user engagement metrics. Additionally, the project integrates a **ChatBot** powered by **DataStax Astra** and **OpenAI API Key**, offering interactive and user-friendly conversational insights.
 
 ## 🌐 Website
 
