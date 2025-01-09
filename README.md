@@ -131,4 +131,3 @@ For any queries or suggestions, please contact:
 ## 💡 Acknowledgements
 
 Special thanks to the **Hackonauts** team for their innovative contributions to this project!
-```
